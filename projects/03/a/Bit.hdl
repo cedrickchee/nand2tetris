@@ -14,5 +14,6 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Mux(a=feedback, b=in, sel=load, out=m1); /* Selects between two inputs */
+    DFF(in=m1, out=feedback, out=out); /* Data flip-flop gate (built-in) */
 }
