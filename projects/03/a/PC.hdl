@@ -16,5 +16,11 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Inc16(in=feedback, out=oinc); /* Sets out to in + 1 */
+
+    Mux16(a=feedback, b=oinc, sel=inc, out=om1); /* Selects between two 16-bit inputs */
+    Mux16(a=om1, b=in, sel=load, out=om2);
+    Mux16(a=om2, b=false, sel=reset, out=om3);
+    
+    Register(in=om3, load=true, out=feedback, out=out); /* 16-bit register */
 }
