@@ -14,8 +14,24 @@
 // All we have is addition and subtraction. So we're faced with a challenge of
 // expressing a multiplication operation using addition and subtraction.
 
-// Computes RAM[2] = a * n
-// Example: RAM[2] = 2 * 3 = 2 + 2 + 2 = 6
+// Computes R2 = R0 * R1
+//          R2 = R0 + previous R2
+// Example: R2 = 2 * 3 = 6
+// Trace table:
+// a=R0
+// n=R1
+// R2=a+R2
+// cond=i-n   (loop condition)
+// 
+//                       iterations
+//           0      | 1      | 2      | 3     |
+//         ------------------------------------
+//     R0: | 2      |        |        |       |
+//     R1: | 3      |        |        |       |
+//      i: | 0      | 1      | 2      | 3     |
+//   cond: | 0-3=-3 | 1-3=-2 | 2-3=-1 | 3-3=0 | 
+//     R2: | 2+0=2  | 2+2=4  | 2+4=6  | end   |
+//
 // Usage: put a number (a) in RAM[0] and another number (n) in RAM[1]
 
 // Declare and initialize variables
@@ -33,35 +49,26 @@
   M=0     // i = 0
 
   @R2
-  M=0
-  @sum
-  M=0     // sum = 0
+  M=0     // reset R2
 
 (LOOP)
   @i
   D=M
   @n
   D=D-M
-  @STOP
-  D;JGE   // if i >= n goto STOP
+  @END
+  D;JGE   // if i >= n goto END
 
-  @sum
-  D=M
   @a
-  D=D+M
-  @sum
-  M=D     // sum = sum + a
+  D=M     // read R0
+  @R2
+  M=D+M   // R2 = a + previous R2
+
   @i
   M=M+1   // i = i + 1
-  
+
   @LOOP
   0;JMP
-
-(STOP)
-  @sum
-  D=M
-  @R2
-  M=D     // RAM[2] = sum
 
 (END)
   @END
