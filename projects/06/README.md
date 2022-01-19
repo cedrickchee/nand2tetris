@@ -63,3 +63,7 @@ ok  	command-line-arguments	0.314s
 
 The test suite checks our work, using the [tests](./test) described
 [here](https://www.nand2tetris.org/project06).
+
+## References
+
+https://github.com/aalhour/Assembler.hack
